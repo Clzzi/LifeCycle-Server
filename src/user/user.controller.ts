@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   Param,
@@ -14,7 +15,10 @@ import DataResponse from 'src/common/response/DataResponse';
 import Response from 'src/common/response/response';
 import { LoginDto } from './dto/login.dto';
 import RegisterDto from './dto/register.dto';
-import { UpdateMyGenerationDto } from './dto/updateInfo.dto';
+import {
+  UpdateMyGenerationDto,
+  UpdateMyPasswordDto,
+} from './dto/updateInfo.dto';
 import { User } from './entities/user.entity';
 import LoginResponseData from './responses/loginRes.dto';
 import { UserService } from './user.service';
@@ -56,5 +60,24 @@ export class UserController {
   ): Promise<Response> {
     await this.userService.updateMyGeneration(dto, user);
     return Response.success('기수 수정 성공');
+  }
+
+  @UseGuards(AuthGuard)
+  @HttpCode(200)
+  @Put('/update/password')
+  async updatePassword(
+    @Body() dto: UpdateMyPasswordDto,
+    @Token() user: User,
+  ): Promise<Response> {
+    await this.userService.updateMyPassword(dto, user);
+    return Response.success('비번 수정 성공');
+  }
+
+  @UseGuards(AuthGuard)
+  @HttpCode(200)
+  @Delete('/')
+  async deleteMyAccount(@Token() user: User): Promise<Response> {
+    await this.userService.deleteMyAccount(user);
+    return Response.success('계정 탈퇴 성공');
   }
 }

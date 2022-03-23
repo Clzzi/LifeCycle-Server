@@ -10,7 +10,10 @@ import RegisterDto from './dto/register.dto';
 import { validationNullORUndefined } from 'src/share/utils/validation.util';
 import { LoginDto } from './dto/login.dto';
 import LoginResponseDto from 'src/user/responses/loginRes.dto';
-import { UpdateMyGenerationDto } from './dto/updateInfo.dto';
+import {
+  UpdateMyGenerationDto,
+  UpdateMyPasswordDto,
+} from './dto/updateInfo.dto';
 
 @Injectable()
 export class UserService {
@@ -52,10 +55,27 @@ export class UserService {
     return this.userRepository.findByUserId(userId);
   }
 
-  public async updateMyGeneration(dto: UpdateMyGenerationDto, user: User) {
+  public async updateMyGeneration(
+    dto: UpdateMyGenerationDto,
+    user: User,
+  ): Promise<void> {
     this.userRepository.merge(user, {
       generation: dto.generation,
     });
     await this.userRepository.save(user);
+  }
+
+  public async updateMyPassword(
+    dto: UpdateMyPasswordDto,
+    user: User,
+  ): Promise<void> {
+    this.userRepository.merge(user, {
+      pw: dto.pw,
+    });
+    await this.userRepository.save(user);
+  }
+
+  public async deleteMyAccount(user: User): Promise<void> {
+    await this.userRepository.remove(user);
   }
 }
