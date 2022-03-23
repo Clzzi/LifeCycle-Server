@@ -10,6 +10,7 @@ import RegisterDto from './dto/register.dto';
 import { validationNullORUndefined } from 'src/share/utils/validation.util';
 import { LoginDto } from './dto/login.dto';
 import LoginResponseDto from 'src/user/responses/loginRes.dto';
+import { updateInfoDto } from './dto/updateInfo.dto';
 
 @Injectable()
 export class UserService {
@@ -47,7 +48,7 @@ export class UserService {
     return new LoginResponseDto(user, accessToken, refreshToken);
   }
 
-  async getUserByUserID(userId: string): Promise<User> {
+  public async getUserByUserID(userId: string): Promise<User> {
     return this.userRepository.findByUserId(userId);
   }
 }
