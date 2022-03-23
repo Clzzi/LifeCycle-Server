@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, HttpCode, Post } from '@nestjs/common';
 import DataResponse from 'src/common/response/DataResponse';
 import RemakeDto from './dto/remake.dto';
 import { TokenService } from './token.service';
@@ -7,6 +7,7 @@ import { TokenService } from './token.service';
 export class TokenController {
   constructor(private readonly tokenService: TokenService) {}
 
+  @HttpCode(200)
   @Post('/refresh')
   async remakeToken(@Body() dto: RemakeDto) {
     const token: string = await this.tokenService.remakeAccessToken(dto);
