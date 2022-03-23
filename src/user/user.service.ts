@@ -9,7 +9,7 @@ import { TokenService } from 'src/token/token.service';
 import RegisterDto from './dto/register.dto';
 import { validationNullORUndefined } from 'src/share/utils/validation.util';
 import { LoginDto } from './dto/login.dto';
-import LoginResponseDto from 'src/user/responses/loginRes.dto';
+import { ILoginResponse } from 'src/user/responses/login.response';
 import {
   UpdateMyGenerationDto,
   UpdateMyPasswordDto,
@@ -34,7 +34,7 @@ export class UserService {
     await this.userRepository.save(dto);
   }
 
-  public async login(dto: LoginDto): Promise<LoginResponseDto> {
+  public async login(dto: LoginDto): Promise<ILoginResponse> {
     const user: User | undefined = await this.userRepository.findByUserId(
       dto.id,
     );
@@ -43,16 +43,16 @@ export class UserService {
       throw new UnauthorizedException('id 또는 pw가 일치하지 않습니다');
     }
 
-    const accessToken: string = this.tokenService.makeAccessToken(user.userId);
+    const token: string = this.tokenService.makeAccessToken(user.userId);
     const refreshToken: string = this.tokenService.makeRefreshToken(
       user.userId,
     );
 
-    return new LoginResponseDto(user, accessToken, refreshToken);
-  }
-
-  public async getUserByUserID(userId: string): Promise<User> {
-    return this.userRepository.findByUserId(userId);
+    return {
+      user,
+      token,
+      refreshToken,
+    };
   }
 
   public async updateMyGeneration(
@@ -77,5 +77,9 @@ export class UserService {
 
   public async deleteMyAccount(user: User): Promise<void> {
     await this.userRepository.remove(user);
+  }
+
+  public getUserByUserID(userId: string): Promise<User> {
+    return this.userRepository.findByUserId(userId);
   }
 }

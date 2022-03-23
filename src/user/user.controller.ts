@@ -20,7 +20,7 @@ import {
   UpdateMyPasswordDto,
 } from './dto/updateInfo.dto';
 import { User } from './entities/user.entity';
-import LoginResponseData from './responses/loginRes.dto';
+import { ILoginResponse } from './responses/login.response';
 import { UserService } from './user.service';
 
 @Controller('/user')
@@ -32,7 +32,7 @@ export class UserController {
   async getUserByUserId(
     @Param('userId') userId: string,
   ): Promise<DataResponse<User>> {
-    const userData = await this.userService.getUserByUserID(userId);
+    const userData: User = await this.userService.getUserByUserID(userId);
     return DataResponse.dataSuccess('userId로 조회 성공', userData);
   }
 
@@ -46,8 +46,8 @@ export class UserController {
 
   @HttpCode(200)
   @Post('/login')
-  async login(@Body() dto: LoginDto): Promise<DataResponse<LoginResponseData>> {
-    const loginRes: LoginResponseData = await this.userService.login(dto);
+  async login(@Body() dto: LoginDto): Promise<DataResponse<ILoginResponse>> {
+    const loginRes: ILoginResponse = await this.userService.login(dto);
     return DataResponse.dataSuccess('로그인 성공', loginRes);
   }
 

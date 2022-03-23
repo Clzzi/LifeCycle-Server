@@ -30,7 +30,7 @@ export class TokenService {
   }
 
   public makeAccessToken(userId: string): string {
-    const payload = this.makePayload(userId);
+    const payload: ITokenPayload = this.makePayload(userId);
 
     const option: JwtSignOptions = {
       expiresIn: this.configService.get('JWT_ACCESS_EXPIRE'),
@@ -42,7 +42,7 @@ export class TokenService {
   }
 
   public makeRefreshToken(userId: string): string {
-    const payload = this.makePayload(userId);
+    const payload: ITokenPayload = this.makePayload(userId);
 
     const option: JwtSignOptions = {
       expiresIn: this.configService.get('JWT_REFRESH_EXPIRE'),
