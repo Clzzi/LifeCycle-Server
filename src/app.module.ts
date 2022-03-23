@@ -5,6 +5,7 @@ import { APP_FILTER } from '@nestjs/core';
 import { ErrorFilter } from './common/filters/error.filter';
 import { DatabaseModule } from './database/database.module';
 import { UserModule } from './user/user.module';
+import { TokenModule } from './token/token.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { UserModule } from './user/user.module';
     }),
     DatabaseModule,
     UserModule,
+    TokenModule,
   ],
   providers: [
     {
