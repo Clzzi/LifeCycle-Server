@@ -14,6 +14,7 @@ import {
   JWT_REFRESH_SUBJECT,
 } from 'src/share/constants/token.constant';
 import { IToken } from 'src/share/interfaces/IToken';
+import { createJWTPayload } from 'src/share/utils/create.util';
 import RemakeDto from './dto/remake.dto';
 
 @Injectable()
@@ -38,9 +39,8 @@ export class TokenService {
   }
 
   public makeRefreshToken(userId: string): string {
-    const payload = {
-      userId,
-    };
+    const payload = createJWTPayload<string>(userId);
+    console.log(payload);
 
     const option: JwtSignOptions = {
       expiresIn: this.configService.get('JWT_EXPIRE'),
