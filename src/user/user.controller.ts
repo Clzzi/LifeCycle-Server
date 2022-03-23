@@ -27,7 +27,6 @@ import { UserService } from './user.service';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @HttpCode(200)
   @Get('/:userId')
   async getUserByUserId(
     @Param('userId') userId: string,
@@ -44,7 +43,6 @@ export class UserController {
     return Response.success('회원가입에 성공했어요');
   }
 
-  @HttpCode(200)
   @Post('/login')
   async login(@Body() dto: LoginDto): Promise<DataResponse<ILoginResponse>> {
     const loginRes: ILoginResponse = await this.userService.login(dto);
@@ -52,7 +50,6 @@ export class UserController {
   }
 
   @UseGuards(AuthGuard)
-  @HttpCode(200)
   @Put('/update/generation')
   async updateGeneration(
     @Body() dto: UpdateMyGenerationDto,
@@ -63,7 +60,6 @@ export class UserController {
   }
 
   @UseGuards(AuthGuard)
-  @HttpCode(200)
   @Put('/update/password')
   async updatePassword(
     @Body() dto: UpdateMyPasswordDto,
@@ -74,7 +70,6 @@ export class UserController {
   }
 
   @UseGuards(AuthGuard)
-  @HttpCode(200)
   @Delete('/')
   async deleteMyAccount(@Token() user: User): Promise<Response> {
     await this.userService.deleteMyAccount(user);
