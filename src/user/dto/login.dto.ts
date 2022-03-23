@@ -1,7 +1,11 @@
 import { IsNotEmpty, IsString } from 'class-validator';
 
-export default class RemakeDto {
+export class LoginDto {
   @IsString()
   @IsNotEmpty()
-  refreshToken!: string;
+  id!: string;
+
+  @IsString()
+  @IsNotEmpty()
+  pw!: string;
 }

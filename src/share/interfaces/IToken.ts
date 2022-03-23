@@ -3,3 +3,7 @@ export interface IToken {
   iss: string;
   sub: string;
 }
+
+export interface ITokenPayload {
+  userId: string;
+}

@@ -13,7 +13,7 @@ import {
   JWT_ISSUER,
   JWT_REFRESH_SUBJECT,
 } from 'src/share/constants/token.constant';
-import { IToken } from 'src/share/interfaces/IToken';
+import { IToken, ITokenPayload } from 'src/share/interfaces/IToken';
 import RemakeDto from './dto/remake.dto';
 
 @Injectable()
@@ -23,10 +23,14 @@ export class TokenService {
     private configService: ConfigService,
   ) {}
 
-  public makeAccessToken(userId: string): string {
-    const payload = {
+  private makePayload(userId: string): ITokenPayload {
+    return {
       userId,
     };
+  }
+
+  public makeAccessToken(userId: string): string {
+    const payload: ITokenPayload = this.makePayload(userId);
 
     const option: JwtSignOptions = {
       expiresIn: this.configService.get('JWT_ACCESS_EXPIRE'),
@@ -38,9 +42,7 @@ export class TokenService {
   }
 
   public makeRefreshToken(userId: string): string {
-    const payload = {
-      userId,
-    };
+    const payload: ITokenPayload = this.makePayload(userId);
 
     const option: JwtSignOptions = {
       expiresIn: this.configService.get('JWT_REFRESH_EXPIRE'),
