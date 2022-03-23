@@ -1,15 +1,13 @@
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
-export class updateInfoDto {
-  @IsNotEmpty()
-  accessToken!: string;
-
-  @IsNotEmpty()
-  pw!: string;
-
+export class UpdateMyGenerationDto {
+  @IsNumber()
   @IsNotEmpty()
   generation!: number;
+}
 
+export class UpdateMyPasswordDto {
+  @IsString()
   @IsNotEmpty()
-  name!: string;
+  pw!: string;
 }
