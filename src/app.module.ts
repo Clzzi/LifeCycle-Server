@@ -6,6 +6,9 @@ import { validate } from 'src/config/env.validation';
 import { APP_FILTER } from '@nestjs/core';
 import { ErrorFilter } from './common/filters/error.filter';
 import { DatabaseModule } from './database/database.module';
+import { UserController } from './user/user.controller';
+import { UserService } from './user/user.service';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -15,14 +18,16 @@ import { DatabaseModule } from './database/database.module';
       validate,
     }),
     DatabaseModule,
+    UserModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, UserController],
   providers: [
     AppService,
     {
       provide: APP_FILTER,
       useClass: ErrorFilter,
     },
+    UserService,
   ],
 })
 export class AppModule {}
