@@ -10,7 +10,7 @@ import {
 @Entity()
 export class Resume {
   @PrimaryGeneratedColumn()
-  id: number;
+  idx: number;
 
   @Column({ name: 'created_at' })
   createdAt: Date;
