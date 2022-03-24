@@ -27,7 +27,7 @@ export class UserService {
       dto.userId,
     );
 
-    if (!validationNullORUndefined(user)) {
+    if (validationNullORUndefined(user)) {
       throw new ForbiddenException('중복된 계정 입니다.');
     }
 

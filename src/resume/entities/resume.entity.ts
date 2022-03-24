@@ -1,6 +1,7 @@
 import { User } from 'src/user/entities/user.entity';
 import {
   Column,
+  CreateDateColumn,
   Entity,
   JoinColumn,
   OneToOne,
@@ -12,7 +13,7 @@ export class Resume {
   @PrimaryGeneratedColumn()
   idx: number;
 
-  @Column({ name: 'created_at' })
+  @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
   @Column({ nullable: false })
