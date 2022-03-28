@@ -2,6 +2,7 @@ import { User } from './entities/user.entity';
 import {
   ForbiddenException,
   Injectable,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { UserRepository } from './repositories/user.repository';
@@ -27,7 +28,8 @@ export class UserService {
       dto.userId,
     );
 
-    if (validationNullORUndefined(user)) {
+    if (!validationNullORUndefined(user)) {
+      // user가 있는경우 false, user가 없는경우 true
       throw new ForbiddenException('중복된 계정 입니다.');
     }
 
@@ -79,7 +81,13 @@ export class UserService {
     await this.userRepository.remove(user);
   }
 
-  public getUserByUserID(userId: string): Promise<User> {
-    return this.userRepository.findByUserId(userId);
+  public async getUserByUserID(userId: string): Promise<User> {
+    const user: User | undefined = await this.userRepository.findByUserId(
+      userId,
+    );
+    if (validationNullORUndefined(user)) {
+      throw new NotFoundException('유저가 없습니다');
+    }
+    return user;
   }
 }
