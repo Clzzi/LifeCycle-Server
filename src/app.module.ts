@@ -6,6 +6,7 @@ import { ErrorFilter } from './common/filters/error.filter';
 import { DatabaseModule } from './database/database.module';
 import { UserModule } from './user/user.module';
 import { TokenModule } from './token/token.module';
+import { ResumeModule } from './resume/resume.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { TokenModule } from './token/token.module';
     DatabaseModule,
     UserModule,
     TokenModule,
+    ResumeModule,
   ],
   providers: [
     {
