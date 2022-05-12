@@ -10,10 +10,11 @@ async function bootstrap() {
     await NestFactory.create<NestExpressApplication>(AppModule, {
       cors: false,
     });
+
   app.enableCors();
   const port: number = app.get(ConfigService).get<number>('PORT');
   app.useGlobalPipes(new ValidationPipe());
-  await app.listen(port, '0.0.0.0');
+  await app.listen(port || 3000, '0.0.0.0');
   Logger.log(`Application is running on: ${await app.getUrl()}`);
 }
 bootstrap();
