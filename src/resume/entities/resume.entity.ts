@@ -13,22 +13,22 @@ export class Resume {
   @PrimaryGeneratedColumn()
   idx: number;
 
-  @CreateDateColumn({ name: 'created_at' })
+  @CreateDateColumn({ name: 'created_at', charset: 'utf8' })
   createdAt: Date;
 
-  @Column({ nullable: false })
+  @Column({ nullable: false, charset: 'utf8' })
   title: string;
 
-  @Column({ nullable: false })
+  @Column({ nullable: false, charset: 'utf8' })
   company: string;
 
-  @Column({ nullable: false })
+  @Column({ nullable: false, charset: 'utf8' })
   stack: string;
 
-  @Column({ nullable: false })
+  @Column({ nullable: false, charset: 'utf8' })
   thumbnail: string;
 
-  @Column({ nullable: false })
+  @Column({ nullable: false, charset: 'utf8' })
   content: string;
 
   @OneToOne(() => User, (user) => user.userId)
