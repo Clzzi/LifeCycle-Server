@@ -1,10 +1,11 @@
-FROM node:12
-WORKDIR /app
+FROM node:16
+
+WORKDIR /usr/src/lifecycle-server
 
 COPY package.json .
 
-RUN yarn
+RUN npm install
+
 COPY . .
 
-RUN yarn build
-CMD node  dist/main.js
+CMD ["npm", "run", "start"]
