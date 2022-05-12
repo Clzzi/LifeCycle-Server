@@ -7,6 +7,7 @@ import { DatabaseModule } from './database/database.module';
 import { UserModule } from './user/user.module';
 import { TokenModule } from './token/token.module';
 import { ResumeModule } from './resume/resume.module';
+import { ImageModule } from './image/image.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { ResumeModule } from './resume/resume.module';
     UserModule,
     TokenModule,
     ResumeModule,
+    ImageModule,
   ],
   providers: [
     {

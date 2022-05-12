@@ -6,6 +6,7 @@ import {
   HttpCode,
   Param,
   Post,
+  Put,
   UseGuards,
 } from '@nestjs/common';
 import { Token } from 'src/common/decorators/token.decorator';
@@ -51,8 +52,19 @@ export class ResumeController {
   @UseGuards(AuthGuard)
   @HttpCode(200)
   @Delete()
-  async deleteResume(idx: number, @Token() user: User): Promise<Response> {
-    await this.resumeService.deleteResume(idx, user);
+  async deleteResume(@Token() user: User): Promise<Response> {
+    await this.resumeService.deleteResume(user.resume.idx, user);
     return Response.success('이력서 삭제 성공');
+  }
+
+  @UseGuards(AuthGuard)
+  @HttpCode(200)
+  @Put()
+  async updateResume(
+    @Token() user: User,
+    @Body() dto: ResumeDto,
+  ): Promise<Response> {
+    const resume: Resume = await this.resumeService.updateResume(dto, user);
+    return DataResponse.dataSuccess('이력서 수정 완료', resume);
   }
 }

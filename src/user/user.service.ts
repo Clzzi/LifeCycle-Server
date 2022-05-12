@@ -37,18 +37,23 @@ export class UserService {
   }
 
   public async login(dto: LoginDto): Promise<ILoginResponse> {
-    const user: User | undefined = await this.userRepository.findByUserId(
-      dto.id,
-    );
+    const user: User | undefined =
+      await this.userRepository.findByUserIdIncludePw(dto.id);
 
-    if (validationNullORUndefined(dto)) {
-      throw new UnauthorizedException('id 또는 pw가 일치하지 않습니다');
+    if (validationNullORUndefined(user)) {
+      throw new UnauthorizedException('ID 또는 PW가 일치하지 않습니다');
+    }
+
+    if (user.pw !== dto.pw) {
+      throw new UnauthorizedException('ID 또는 PW가 일치하지 않습니다');
     }
 
     const token: string = this.tokenService.makeAccessToken(user.userId);
     const refreshToken: string = this.tokenService.makeRefreshToken(
       user.userId,
     );
+
+    delete user.pw;
 
     return {
       user,
@@ -86,8 +91,23 @@ export class UserService {
       userId,
     );
     if (validationNullORUndefined(user)) {
-      throw new NotFoundException('유저가 없습니다');
+      throw new NotFoundException('해당하는 유저가 없습니다');
     }
+    return user;
+  }
+
+  public async getUserAndResumeByUserID(userId: string): Promise<User> {
+    const user: User | undefined =
+      await this.userRepository.findUserAndResumeByUserId(userId);
+
+    if (validationNullORUndefined(user)) {
+      throw new NotFoundException('해당하는 유저가 없습니다');
+    }
+
+    if (user.resume) {
+      delete user.resume.user;
+    }
+
     return user;
   }
 }

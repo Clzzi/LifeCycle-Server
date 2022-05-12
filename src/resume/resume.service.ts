@@ -18,15 +18,17 @@ export class ResumeService {
     const resume: Resume | undefined = await this.resumeRepository.findByIdx(
       idx,
     );
-
     if (validationNullORUndefined(resume)) {
       throw new NotFoundException('존재하지 않는 이력서입니다');
     }
+
     return resume;
   }
 
   public getResume(): Promise<Resume[]> {
-    return this.resumeRepository.find();
+    return this.resumeRepository.find({
+      relations: ['user'],
+    });
   }
 
   public async createResume(dto: ResumeDto, user: User): Promise<void> {
@@ -43,17 +45,13 @@ export class ResumeService {
     await this.resumeRepository.save(data);
   }
 
-  public async updateResume(idx: number, user: User): Promise<void> {
+  public async updateResume(dto: ResumeDto, user: User): Promise<Resume> {
     const resume: Resume | undefined = await this.resumeRepository.findByIdx(
-      idx,
+      user.resume.idx,
     );
 
-    if (resume.user.userId === user.userId) {
-      throw new UnauthorizedException('본인의 이력서가 아닙니다');
-    }
-
-    this.resumeRepository.merge(resume);
-    await this.resumeRepository.save(resume);
+    this.resumeRepository.merge(resume, dto);
+    return await this.resumeRepository.save(resume);
   }
 
   public async deleteResume(idx: number, user: User): Promise<void> {
@@ -61,7 +59,7 @@ export class ResumeService {
       idx,
     );
 
-    if (resume.user.userId === user.userId) {
+    if (resume.user.userId !== user.userId) {
       throw new UnauthorizedException('본인의 이력서가 아닙니다');
     }
 
