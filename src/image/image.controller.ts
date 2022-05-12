@@ -17,6 +17,7 @@ const s3 = new AWS.S3();
 @Controller('/image')
 export class ImageController {
   constructor(private readonly imageService: ImageService) {}
+
   @Post()
   @UseInterceptors(
     FilesInterceptor('files', 3, {

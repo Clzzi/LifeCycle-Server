@@ -35,6 +35,15 @@ export class UserController {
     return DataResponse.dataSuccess('userId로 조회 성공', userData);
   }
 
+  @UseGuards(AuthGuard)
+  @Get()
+  async getUserByToken(@Token() user: User): Promise<DataResponse<User>> {
+    const userAndResume = await this.userService.getUserAndResumeByUserID(
+      user.userId,
+    );
+    return DataResponse.dataSuccess('정보조회 성공', userAndResume);
+  }
+
   @HttpCode(200)
   @Post('/register')
   async register(@Body() dto: RegisterDto): Promise<Response> {

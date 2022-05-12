@@ -27,9 +27,8 @@ export class AuthGuard implements CanActivate {
     }
 
     const payload: IToken = await this.tokenService.verifyToken(token);
-    const user: User | undefined = await this.userService.getUserByUserID(
-      payload.userId,
-    );
+    const user: User | undefined =
+      await this.userService.getUserAndResumeByUserID(payload.userId);
 
     if (validationNullORUndefined(user)) {
       throw new UnauthorizedException('유저가 존재하지 않아요');
