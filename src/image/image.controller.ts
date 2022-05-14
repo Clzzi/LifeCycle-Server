@@ -25,6 +25,7 @@ export class ImageController {
         s3: s3,
         bucket: process.env.AWS_S3_BUCKET_NAME,
         acl: 'public-read',
+        cacheControl: 'max-age=31536000, must-revalidate',
         contentType: multerS3.AUTO_CONTENT_TYPE,
         key: function (_, file, cb) {
           cb(null, `${uuid()}${extname(file.originalname)}`);
